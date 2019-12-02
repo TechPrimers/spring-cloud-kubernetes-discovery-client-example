@@ -1,0 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30084
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-service
+spec:
+  selector:
+    matchLabels:
+      app: users-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: users-service
+    spec:
+      containers:
+        - name: users-service
+          image: users-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
